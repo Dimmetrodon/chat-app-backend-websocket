@@ -1,0 +1,57 @@
+<div id="v-app">
+    <h1>{{ title }}</h1>
+    <form>
+      <input v-model="text" type="text" />
+      <button type="submit" @click.prevent="sendMessage()">Send</button>
+      <button type="submit" @click.prevent="sendPost()">Send Post Request</button>
+    </form>
+    <p>
+      <ul>
+        <li v-for="msg of messages">{{ msg }}</li>
+      </ul>
+    </p>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    var app = new Vue({
+      el: "#v-app",
+      data: {
+        title: "Websockets Testser",
+        text: "",
+        messages: ["Some message", "Another message"],
+        socket: null,
+      },
+      methods: {
+        sendMessage() {
+          console.log(`send: ${this.text}`);
+          this.socket.emit("msgToServer", this.text);
+          this.text = "";
+        },
+        receiveMessage(text) {
+          console.log(`recv: ${text}`);
+          this.messages.push(text);
+        },
+        async sendPost() 
+        {
+            const response = await fetch("http://localhost:5000/messages/test", 
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: this.text }),
+            });
+            const message = await response.json();
+            console.log(message);
+            this.text = "";
+        },
+      },
+      created() {
+        this.socket = io("http://localhost:5000");
+        this.socket.on("msgToClient", (text) => {
+          this.receiveMessage(text);
+        });
+      },
+    });
+  </script>
+  
