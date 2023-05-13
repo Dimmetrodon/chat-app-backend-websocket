@@ -12,10 +12,10 @@ import { Friend } from './friends/friends.model';
 import { MessagesModule } from './messages/messages.module';
 import { ChatsModule } from './chats/chats.module';
 import { SearchModule } from './search/search.module';
-import { AppGateway } from './app.gateway';
+//import { AppGateway } from './app.gateway';
 
 @Module({
-    providers: [AppGateway],
+    providers: [],
     imports: [
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env`,

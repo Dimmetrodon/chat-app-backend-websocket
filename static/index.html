@@ -4,6 +4,8 @@
       <input v-model="text" type="text" />
       <button type="submit" @click.prevent="sendMessage()">Send</button>
       <button type="submit" @click.prevent="sendPost()">Send Post Request</button>
+      <button type="submit" @click.prevent="sendPost2()">Send Post Request Two Servers</button>
+
     </form>
     <p>
       <ul>
@@ -45,9 +47,21 @@
             console.log(message);
             this.text = "";
         },
+        async sendPost2() 
+        {
+            const response = await fetch("http://localhost:5000/messages/test2", 
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: this.text }),
+            });
+            const message = await response.json();
+            console.log(message);
+            this.text = "";
+        },
       },
       created() {
-        this.socket = io("http://localhost:5000");
+        this.socket = io("http://localhost:3000");
         this.socket.on("msgToClient", (text) => {
           this.receiveMessage(text);
         });
