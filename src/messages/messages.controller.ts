@@ -43,10 +43,17 @@ export class MessagesController {
     }
 
     @Post('test2')
-    async makePostRequest() 
+    async makePostRequest(@Body() body: {text: string}) 
     {
-        console.log('POST REQUEST TO SECOND SERVER SENT')
-        await axios.post('http://localhost:3000/messages/test', {text: 'test-data'})
+        console.log('POST REQUEST TO SECOND SERVER SENT(message to all)')
+        await axios.post('http://localhost:3000/messages/messagetoall', body)
+    }
+
+    @Post('texttoroom')
+    async createMessageToRoom(@Body() body: {room: string, text: string})
+    {
+        console.log('POST REQUEST TO SECOND SERVER SENT(message to room)')
+        await axios.post('http://localhost:3000/messages/messagetoroom', body)
     }
 
     @ApiOperation({ summary: 'отправка сообщения' })

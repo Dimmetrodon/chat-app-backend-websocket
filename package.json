@@ -17,11 +17,13 @@
         "prepare": "husky install"
     },
     "dependencies": {
+        "@grpc/grpc-js": "^1.8.14",
         "@nestjs-modules/mailer": "^1.8.1",
         "@nestjs/common": "^9.4.0",
         "@nestjs/config": "^2.3.1",
         "@nestjs/core": "^9.4.0",
         "@nestjs/jwt": "^10.0.3",
+        "@nestjs/microservices": "^9.4.0",
         "@nestjs/platform-express": "^9.4.0",
         "@nestjs/platform-socket.io": "^9.4.0",
         "@nestjs/sequelize": "^9.0.2",
@@ -34,6 +36,7 @@
         "class-validator": "^0.14.0",
         "cookie-parser": "^1.4.6",
         "cross-env": "^7.0.3",
+        "grpc": "^1.24.11",
         "handlebars": "^4.7.7",
         "nodemailer": "^6.9.1",
         "pg": "^8.10.0",
