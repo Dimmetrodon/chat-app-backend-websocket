@@ -39,6 +39,7 @@ interface ImessageServiceGrpc
 export class MessagesController implements OnModuleInit {
     constructor(private messageService: MessagesService) {}
 
+    //под страхом выстрела пушки не трогать.
     @Client(grpcClientOptions) private readonly client: ClientGrpc;
     private grpcService: ImessageServiceGrpc
     onModuleInit()
@@ -56,32 +57,12 @@ export class MessagesController implements OnModuleInit {
     {
         this.wss = server;
     }
-
+    //можно менять
     @Post('texttoroomgrpc')
     async handleCreateMessageToRoomGrpc(@Body() body: {room: string, text: string})
     {
         console.log('GRPC REQUEST TO SECOND SERVER SENT')
         return this.grpcService.createMessageToRoomGrpc(body);
-    }
-
-    @Post('test')
-    createMessage(@Body() dto: DtoMessage) 
-    {
-        console.log('POST REQUEST TO FIRST SERVER TEST PASSED')
-    }
-
-    @Post('test2')
-    async makePostRequest(@Body() body: {text: string}) 
-    {
-        console.log('POST REQUEST TO SECOND SERVER SENT(message to all)')
-        await axios.post('http://localhost:3000/messages/messagetoall', body)
-    }
-
-    @Post('texttoroom')
-    async createMessageToRoom(@Body() body: {room: string, text: string})
-    {
-        console.log('POST REQUEST TO SECOND SERVER SENT(message to room)')
-        await axios.post('http://localhost:3000/messages/messagetoroom', body)
     }
 
     @ApiOperation({ summary: 'отправка сообщения' })

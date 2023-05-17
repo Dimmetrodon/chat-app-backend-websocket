@@ -3,14 +3,9 @@
   <form>
     <input v-model="text" type="text" />
     <button type="submit" @click.prevent="sendMessage()">Send</button>
-    <button type="submit" @click.prevent="sendPost()">Send Post Request</button>
-    <button type="submit" @click.prevent="sendPost2()">Send Post Request Two Servers</button>
     <button type="button" @click="joinRoom('first chat')">First chat</button>
     <button type="button" @click="joinRoom('second chat')">Second chat</button>
     <button type="button" @click="joinRoom('third chat')">Third chat</button>
-    <input v-model="text_to_specific_room" type="text" />
-    <button type="button" @click="sendMessageToChat()">Send to chat</button>
-    <input v-model="room_to_message" type="text" />
     <input v-model="text_to_specific_room_grpc" type="text" />
     <button type="button" @click="sendMessageToChatGrpc()">Send to chat Grpc</button>
     <input v-model="room_to_message_grpc" type="text" />
