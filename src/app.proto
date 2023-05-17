@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package app;
+
+service messageServiceGrpc
+{
+    rpc CreateMessageToRoomGrpc (MessageToChat) returns (EmptyMessage) {};
+}
+
+message EmptyMessage
+{
+    string text = 1;
+}
+
+message MessageToChat
+{
+    string room = 1;
+    string text = 2;
+}

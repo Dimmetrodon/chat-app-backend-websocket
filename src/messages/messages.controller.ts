@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    OnModuleInit,
     Param,
     Post,
     Query,
@@ -14,25 +15,53 @@ import { MessagesService } from './messages.service';
 import { WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import axios from 'axios';
+import { Observable } from 'rxjs';
+import {
+    GrpcMethod,
+    ClientGrpc,
+    Client,
+    Transport,
+} from '@nestjs/microservices';
+import { grpcClientOptions } from 'src/grpc.options';
 
-export interface DtoMessage {
+export interface DtoMessage 
+{
     text: string;
-  }
+}
+
+interface ImessageServiceGrpc
+{
+    createMessageToRoomGrpc(data: {room: string, text: string}): Observable<any>;
+}
 
 @ApiTags('Сообщения')
 @Controller('messages')
-export class MessagesController {
+export class MessagesController implements OnModuleInit {
     constructor(private messageService: MessagesService) {}
 
-    @WebSocketServer() wss: Server;
+    @Client(grpcClientOptions) private readonly client: ClientGrpc;
+    private grpcService: ImessageServiceGrpc
+    onModuleInit()
+    {
+        this.grpcService = this.client.getService<ImessageServiceGrpc>('messageServiceGrpc');
+    }
 
+    @WebSocketServer() wss: Server;
     @WebSocketServer()
-    set server(server: Server) {
+    set server(server: Server) 
+    {
+        this.wss = server;
+    }
+    afterInit(server: Server) 
+    {
         this.wss = server;
     }
 
-    afterInit(server: Server) {
-        this.wss = server;
+    @Post('texttoroomgrpc')
+    async handleCreateMessageToRoomGrpc(@Body() body: {room: string, text: string})
+    {
+        console.log('GRPC REQUEST TO SECOND SERVER SENT')
+        return this.grpcService.createMessageToRoomGrpc(body);
     }
 
     @Post('test')

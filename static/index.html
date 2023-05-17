@@ -11,6 +11,9 @@
     <input v-model="text_to_specific_room" type="text" />
     <button type="button" @click="sendMessageToChat()">Send to chat</button>
     <input v-model="room_to_message" type="text" />
+    <input v-model="text_to_specific_room_grpc" type="text" />
+    <button type="button" @click="sendMessageToChatGrpc()">Send to chat Grpc</button>
+    <input v-model="room_to_message_grpc" type="text" />
   </form>
   <p>
     <ul>
@@ -29,7 +32,9 @@
       messages: ["Some message", "Another message"],
       socket: null,
       text_to_specific_room: "",
-      room_to_message: ""
+      room_to_message: "",
+      text_to_specific_room_grpc: "",
+      room_to_message_grpc: ""
     },
     methods: {
       sendMessage() {
@@ -77,6 +82,18 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ room: this.room_to_message, text: this.text_to_specific_room }),
+          });
+          const message = await response.json();
+          console.log(message);
+          this.text = "";
+      },
+      async sendMessageToChatGrpc() 
+      {
+          const response = await fetch("http://localhost:5000/messages/texttoroomgrpc", 
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ room: this.room_to_message_grpc, text: this.text_to_specific_room_grpc }),
           });
           const message = await response.json();
           console.log(message);
