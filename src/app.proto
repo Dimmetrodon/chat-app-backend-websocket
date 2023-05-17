@@ -4,10 +4,10 @@ package app;
 
 service messageServiceGrpc
 {
-    rpc CreateMessageToRoomGrpc (MessageToChat) returns (EmptyMessage) {};
+    rpc CreateMessageToRoomGrpc (MessageToChat) returns (Message) {};
 }
 
-message EmptyMessage
+message Message
 {
     string text = 1;
 }

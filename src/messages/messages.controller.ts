@@ -67,7 +67,6 @@ export class MessagesController implements OnModuleInit {
     @Post('test')
     createMessage(@Body() dto: DtoMessage) 
     {
-        //this.wss.emit('msgToClient', dto.text);
         console.log('POST REQUEST TO FIRST SERVER TEST PASSED')
     }
 
